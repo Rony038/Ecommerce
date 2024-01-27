@@ -28,8 +28,7 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "userId")
     private User user;
-    
-
+   
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderDetails> orderDetails;
 
@@ -54,6 +53,20 @@ public class Order {
 	}
 
 	public void setOrderDetails(List<OrderDetails> orderDetails) {
+		this.orderDetails = orderDetails;
+	}
+	
+	
+
+	public Order() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public Order(int orderId, User user, List<OrderDetails> orderDetails) {
+		super();
+		this.orderId = orderId;
+		this.user = user;
 		this.orderDetails = orderDetails;
 	}
 

@@ -16,5 +16,7 @@ public interface ShoppingCartService {
 	ShoppingCartDto updateCart(@Valid int userId, List<CartItemDto> cartItems);
 
 	ShoppingCartDto removeFromCart(int userId, int productId);
+	
+	public ShoppingCartDto getShoppingCart(int userId, int cartId);
 
 }

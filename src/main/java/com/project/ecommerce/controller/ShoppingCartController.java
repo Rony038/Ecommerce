@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.project.ecommerce.dto.CartItemDto;
 import com.project.ecommerce.dto.ProductDto;
 import com.project.ecommerce.dto.ShoppingCartDto;
+import com.project.ecommerce.dto.UserDto;
 import com.project.ecommerce.service.ShoppingCartService;
 
 import jakarta.validation.Valid;
@@ -48,6 +49,11 @@ public class ShoppingCartController {
     	this.service.removeFromCart(userId, productId);
 		return new ResponseEntity<ShoppingCartDto>(this.service.removeFromCart(userId, productId), HttpStatus.CREATED);
     }
+    
+    @GetMapping("/get-shopping-cart/{userId}/{cartId}")
+    public ResponseEntity<ShoppingCartDto> getShoppingCart(@PathVariable int userId, @PathVariable("cartId") int cartId){
+		return new ResponseEntity<ShoppingCartDto>(this.service.getShoppingCart(userId, cartId), HttpStatus.OK);
+	}
 
     
 }

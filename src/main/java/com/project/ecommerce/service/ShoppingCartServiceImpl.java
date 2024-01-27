@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.project.ecommerce.dto.CartItemDto;
 import com.project.ecommerce.dto.ProductDto;
 import com.project.ecommerce.dto.ShoppingCartDto;
+import com.project.ecommerce.dto.UserDto;
 import com.project.ecommerce.exception.ResourceNotFoundException;
 import com.project.ecommerce.model.CartItem;
 import com.project.ecommerce.model.Product;
@@ -42,7 +43,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 	@Override
     public ShoppingCartDto addToCart(int userId, CartItemDto cartItemDto) {
         ShoppingCart shoppingCart = getOrCreateShoppingCart(userId);
-        System.out.println(shoppingCart.getCartId());
+       
         Product product = this.productRepository.findById(cartItemDto.getProductId())
                 .orElseThrow(() -> new ResourceNotFoundException("Product", "ID", cartItemDto.getProductId()));
 
@@ -59,9 +60,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
             cartItem.setQuantity(cartItemDto.getQuantity());
             shoppingCart.getCartItems().add(cartItem);
         }
-
-        
-        
         return this.convertToDto(this.repository.save(shoppingCart));
     }
 
@@ -119,7 +117,13 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         }
         return null;
     }
-	
+    
+    @Override
+    public ShoppingCartDto getShoppingCart(int userId, int cartId) {
+        ShoppingCart shoppingCart = this.repository.findById(cartId)
+                .orElseThrow(() -> new ResourceNotFoundException("Shopping Cart", " Id ", cartId));
+        return this.convertToDto(shoppingCart);
+    }
 	public ShoppingCartDto convertToDto(ShoppingCart shoppingCart) {
         return this.modelMapper.map(shoppingCart, ShoppingCartDto.class);
 
