@@ -57,10 +57,13 @@ public class ShoppingCart {
 	}
 
 	@Override
-	public String toString() {
-		return "ShoppingCart [cartId=" + cartId + ", user=" + user + ", cartItems=" + cartItems
-				+ "]";
-	}
-    
+    public String toString() {
+        return "ShoppingCart{" +
+                "cartId=" + cartId +
+                ", user=" + (user != null ? user.getUserId() : null) + // Accessing user's ID to avoid circular reference
+                '}';
+    }
+
+	
     
 }

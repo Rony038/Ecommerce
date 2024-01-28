@@ -6,6 +6,6 @@ import jakarta.validation.Valid;
 
 public interface OrderService {
 
-	OrderDto processOrder(@Valid int userId, int cartId);
+	OrderDto processOrder(@Valid int userId);
 
 }

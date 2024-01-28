@@ -24,6 +24,7 @@ public class OrderDetails {
     private Order order;
     
     private double price;
+    private int quantity;
 
 	public int getOrderDetailId() {
 		return orderDetailId;
@@ -57,6 +58,14 @@ public class OrderDetails {
 		this.price = price;
 	}
 	
+	public int getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+	
 
 	public OrderDetails() {
 		super();
@@ -66,7 +75,7 @@ public class OrderDetails {
 	@Override
 	public String toString() {
 		return "OrderDetails [orderDetailId=" + orderDetailId + ", product=" + product + ", order=" + order + ", price="
-				+ price + "]";
+				+ price + ", quantity=" + quantity + "]";
 	}
 
 	

@@ -16,13 +16,12 @@ import com.project.ecommerce.service.OrderService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/Order")
+@RequestMapping("/api/order")
 public class OrderController {
 	@Autowired
 	private OrderService service;
 	@PostMapping("/process-order")
-	public ResponseEntity<OrderDto> processOrder(@Valid @RequestParam("userId") int userId,
-            @RequestParam("cartId") int cartId) {
-		return new ResponseEntity<OrderDto>(this.service.processOrder(userId, cartId), HttpStatus.CREATED);
+	public ResponseEntity<OrderDto> processOrder(@Valid @RequestParam("userId") int userId) {
+		return new ResponseEntity<OrderDto>(this.service.processOrder(userId), HttpStatus.CREATED);
 	}
 }

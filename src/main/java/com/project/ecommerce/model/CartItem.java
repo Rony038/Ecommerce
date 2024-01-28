@@ -61,10 +61,12 @@ public class CartItem {
 	}
 
 	@Override
-	public String toString() {
-		return "CartItem [cartItemId=" + cartItemId + ", quantity=" + quantity + ", shoppingCart=" + shoppingCart
-				+ ", product=" + product + "]";
-	}
-    
+    public String toString() {
+        return "CartItem{" +
+                "cartItemId=" + cartItemId +
+                ", quantity=" + quantity +
+                ", product=" + (product != null ? product.getProductId() : null) + // Accessing product's ID to avoid circular reference
+                '}';
+    }
     
 }
