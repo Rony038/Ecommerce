@@ -1,5 +1,13 @@
 package com.project.ecommerce.dto;
 
+
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,8 +15,15 @@ import lombok.NoArgsConstructor;
 
 public class UserDto {
 	private int userId;
+	@NotEmpty
+	@Size(min = 2, message = "Name must be minimum 2 characters")
     private String userName;
+	@NotBlank
+	@Size(min = 2, message = "Password must be minimum 2 characters")
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY) 
     private String password;
+    @Email(message = "Invalid email")
+	@NotEmpty
     private String email;
 	public int getUserId() {
 		return userId;
