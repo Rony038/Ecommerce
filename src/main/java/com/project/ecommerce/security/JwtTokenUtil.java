@@ -1,21 +1,29 @@
 package com.project.ecommerce.security;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Function;
-
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import javax.crypto.SecretKey;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @Component
-public class JwtTokenHelper {
-	private String SECRET_KEY = "secret";
-	public static final long JWT_TOKEN_VALIDITY = 1000 * 60 * 60 * 10;
+public class JwtTokenUtil {
+    private final String key = "MMvUxHrMHVyaQNcwq3tH0k1qMdNT7iR291+QeczxSaxhyAz8hMkBUzd/eZDq3oXt"; 
+    public static long JWT_TOKEN_VALIDITY = 1000*60*60*240;
+    
+    SecretKey SECRET_KEY = Keys.hmacShaKeyFor(Decoders.BASE64.decode(key));
+
+//    private final String SECRET_KEY = "ELP_SECRET_KEY_2023";
+//    public static long JWT_TOKEN_VALIDITY = 1000 * 60 * 60 * 240;
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -29,16 +37,20 @@ public class JwtTokenHelper {
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
+
     private Claims extractAllClaims(String token) {
         return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
     }
 
-    private Boolean isTokenExpired(String token) {
+    public Boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
 
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
+        List<String> departmentList = userDetails.getAuthorities()
+                .stream().map(autority -> autority.toString()).collect(Collectors.toList());
+        claims.put("departments", departmentList.toString());
         return createToken(claims, userDetails.getUsername());
     }
 
@@ -53,4 +65,5 @@ public class JwtTokenHelper {
         final String username = extractUsername(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
+
 }

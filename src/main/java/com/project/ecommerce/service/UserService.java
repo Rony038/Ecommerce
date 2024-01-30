@@ -3,6 +3,7 @@ package com.project.ecommerce.service;
 import java.util.List;
 
 import com.project.ecommerce.dto.UserDto;
+import com.project.ecommerce.model.User;
 
 import jakarta.validation.Valid;
 
@@ -19,5 +20,9 @@ public interface UserService {
 	UserDto updateUser(@Valid UserDto userDto, int id);
 
 	void deleteUser(int id);
+	
+	User loadUserByUsername(String username);
+    
+    User getUserByUsername(String username);
 
 }
