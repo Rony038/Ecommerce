@@ -27,9 +27,8 @@ public class Product {
     @Column(name = "product_name", length = 100, nullable = false)
     private String productName;
 
-    @Lob
-    @Column(name = "product_image")
-    private byte[] productImage;
+    @Column(name = "imageUrl")
+    private String imageUrl;
 
     @Column(name = "product_desc")
     private String productDesc;
@@ -59,12 +58,12 @@ public class Product {
 		this.productName = productName;
 	}
 
-	public byte[] getProductImage() {
-		return productImage;
+	public String getImageUrl() {
+		return imageUrl;
 	}
 
-	public void setProductImage(byte[] productImage) {
-		this.productImage = productImage;
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
 	}
 
 	public String getProductDesc() {
@@ -74,6 +73,8 @@ public class Product {
 	public void setProductDesc(String productDesc) {
 		this.productDesc = productDesc;
 	}
+	
+	
 
 	public double getPrice() {
 		return price;
@@ -101,8 +102,7 @@ public class Product {
 
 	@Override
 	public String toString() {
-		return "Product [productId=" + productId + ", productName=" + productName + ", productImage="
-				+ Arrays.toString(productImage) + ", productDesc=" + productDesc + ", price=" + price
+		return "Product [productId=" + productId + ", productName=" + productName + ", imageUrl=" + imageUrl + ", productDesc=" + productDesc + ", price=" + price
 				+ ", cartItems=" + cartItems + ", orderDetails=" + orderDetails + "]";
 	}
     

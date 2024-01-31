@@ -1,19 +1,11 @@
 package com.project.ecommerce.dto;
 
-import java.util.Arrays;
-
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
-
+import org.springframework.web.multipart.MultipartFile;
 
 public class ProductDto {
 	private int productId;
     private String productName;
-    private byte[] productImage;
+    private MultipartFile productImage;
     private String productDesc;
     private double price;
 	public int getProductId() {
@@ -28,10 +20,11 @@ public class ProductDto {
 	public void setProductName(String productName) {
 		this.productName = productName;
 	}
-	public byte[] getProductImage() {
+	
+	public MultipartFile getProductImage() {
 		return productImage;
 	}
-	public void setProductImage(byte[] productImage) {
+	public void setProductImage(MultipartFile productImage) {
 		this.productImage = productImage;
 	}
 	public String getProductDesc() {
@@ -48,9 +41,9 @@ public class ProductDto {
 	}
 	@Override
 	public String toString() {
-		return "ProductDto [productId=" + productId + ", productName=" + productName + ", productImage="
-				+ Arrays.toString(productImage) + ", productDesc=" + productDesc + ", price=" + price + "]";
+		return "ProductDto [productId=" + productId + ", productName=" + productName + ", productImage=" + productImage
+				+ ", productDesc=" + productDesc + ", price=" + price + "]";
 	}
-    
+	
     
 }
