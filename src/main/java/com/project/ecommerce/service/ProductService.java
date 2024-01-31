@@ -1,7 +1,6 @@
 
 package com.project.ecommerce.service;
 
-
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -11,11 +10,11 @@ import com.project.ecommerce.exception.ResourceNotFoundException;
 import com.project.ecommerce.model.Product;
 
 public interface ProductService {
-    // create
+	// create
 	ProductDto createProduct(ProductDto dto) throws IOException;
 
 	// retrieve;
-	Optional<Product> getProduct(int id) throws ResourceNotFoundException;
+	Product getProduct(int id);
 
 	List<Product> getAllProduct();
 
@@ -24,4 +23,8 @@ public interface ProductService {
 
 	// delete
 	void deleteProduct(int id);
+
+	// search posts
+	List<ProductDto> searchProduct(String keyword);
+
 }

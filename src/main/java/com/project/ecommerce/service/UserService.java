@@ -20,8 +20,6 @@ public interface UserService {
 	UserDto updateUser(@Valid UserDto userDto, int id);
 
 	void deleteUser(int id);
-	
-	User loadUserByUsername(String username);
     
     User getUserByUsername(String username);
 

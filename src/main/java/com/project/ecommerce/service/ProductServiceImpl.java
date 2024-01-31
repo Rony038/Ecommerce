@@ -45,10 +45,10 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Optional<Product> getProduct(int id)throws ResourceNotFoundException {
-        Optional<Product> optionalProduct = this.repository.findById(id);
-        
-        return optionalProduct;
+    public Product getProduct(int id) {
+        Product product = this.repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Product", " Id ", id));
+        return product;
     }
 
     @Override
@@ -93,6 +93,13 @@ public class ProductServiceImpl implements ProductService {
 
         this.repository.delete(product);
     }
+    
+    @Override
+	public List<ProductDto> searchProduct(String keyword) {
+		List<Product> products = this.repository.findByProductNameContaining(keyword);
+		List<ProductDto> productDto = products.stream().map(this::convertToDto).collect(Collectors.toList());
+		return productDto;
+	}
 
     public ProductDto convertToDto(Product product) {
         return this.modelMapper.map(product, ProductDto.class);

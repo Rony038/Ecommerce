@@ -22,8 +22,6 @@ import com.project.ecommerce.exception.ResourceNotFoundException;
 import com.project.ecommerce.model.Product;
 import com.project.ecommerce.service.ImageService;
 import com.project.ecommerce.service.ProductService;
-import com.project.ecommerce.dto.ProductWithImageDataDto;
-
 import jakarta.validation.Valid;
 
 @RestController
@@ -43,40 +41,14 @@ public class ProductController {
 
 	// retrieve
 	@GetMapping("/{id}")
-	public ResponseEntity<ProductWithImageDataDto> getProduct(@PathVariable("id") int id) throws IOException {
-		// return new ResponseEntity<ProductDto>(this.service.getProduct(id),
-		// HttpStatus.OK);
-		try {
-			Optional<Product> product = this.service.getProduct(id);
-			byte[] imageData = imageService.load(product.get().getImageUrl()); // Load image data
-			ProductWithImageDataDto productWithImageDataDto = new ProductWithImageDataDto();
-			productWithImageDataDto.setImageData(imageData);
-			productWithImageDataDto.setProduct(product.get());
-			return ResponseEntity.ok(productWithImageDataDto);
-		} catch (ResourceNotFoundException e) {
-			return ResponseEntity.notFound().build();
-		}
+	public ResponseEntity<Product> getProduct(@PathVariable("id") int id) {
+		return new ResponseEntity<Product>(this.service.getProduct(id), HttpStatus.OK);
 
 	}
 
 	@GetMapping("/")
-	public ResponseEntity<List<ProductWithImageDataDto>> getAllProduct() {
-		//return ResponseEntity.ok(this.service.getAllProduct());
-		List<ProductWithImageDataDto> productWithImageDataDto = new ArrayList<ProductWithImageDataDto>();
-		List<Product> products = this.service.getAllProduct();
-		for (Product product : products) {
-            try {
-                byte[] imageData = this.imageService.load(product.getImageUrl());
-                
-                productWithImageDataDto.add(imageData);
-                //productWithImageDataDto.setImageData(imageData);
-    			//productWithImageDataDto.setProduct(product);
-            } catch (IOException e) {
-                // Handle exception
-            }
-            
-        }
-		return ResponseEntity.ok(productWithImageDataDto);
+	public ResponseEntity<List<Product>> getAllProduct() {
+		return ResponseEntity.ok(this.service.getAllProduct());
 	}
 
 	// update
@@ -98,5 +70,11 @@ public class ProductController {
 	public ResponseEntity<?> deleteProduct(@PathVariable("id") int id) {
 		this.service.deleteProduct(id);
 		return ResponseEntity.ok("Product Deleted");
+	}
+
+	// Search post
+	@GetMapping("/search/{keywords}")
+	public ResponseEntity<List<ProductDto>> getProductByid(@PathVariable String keywords) {
+		return ResponseEntity.ok(this.service.searchProduct(keywords));
 	}
 }

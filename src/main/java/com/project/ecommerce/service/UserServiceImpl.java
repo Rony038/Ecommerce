@@ -21,66 +21,68 @@ import com.project.ecommerce.repository.UserRepository;
 import com.project.ecommerce.repository.RoleRepository;
 
 @Service
-public class UserServiceImpl implements UserService, UserDetailsService  {
+public class UserServiceImpl implements UserService {
 	@Autowired
-    private UserRepository repository;
+	private UserRepository repository;
 
-    @Autowired
-    private ModelMapper modelMapper;
+	@Autowired
+	private ModelMapper modelMapper;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
+	@Autowired
+	private RoleRepository roleRepository;
 
-    public UserDto createUser(UserDto dto) {
-        return this.convertToDto(this.repository.save(this.convertToUser(dto)));
-    }
+	public UserDto createUser(UserDto dto) {
+		User user = convertToUser(dto);
+		this.repository.save(user);
+		user.getRoles().add(Const.ROLE_NORMAL);
+		return convertToDto(user);
+	}
 
-    @Override
-    public UserDto getUser(int id) {
-        User user = this.repository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("User", " Id ", id));
-        return this.convertToDto(user);
-    }
+	@Override
+	public UserDto getUser(int id) {
+		User user = this.repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User", " Id ", id));
+		return this.convertToDto(user);
+	}
 
-    @Override
-    public List<UserDto> getAllUser() {
-        List<User> userList = this.repository.findAll();
-        return userList.stream().map(this::convertToDto).collect(Collectors.toList());
-    }
+	@Override
+	public List<UserDto> getAllUser() {
+		List<User> userList = this.repository.findAll();
+		return userList.stream().map(this::convertToDto).collect(Collectors.toList());
+	}
 
-    @Override
-    public UserDto updateUser(UserDto dto, int id) {
-        User user = this.repository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("User", " Id ", id));
+	@Override
+	public UserDto updateUser(UserDto dto, int id) {
+		User user = this.repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User", " Id ", id));
 
-        user.setUserName(dto.getUserName());
-        user.setPassword(dto.getPassword());
-        user.setEmail(dto.getEmail());
+		user.setUserName(dto.getUserName());
+		user.setPassword(dto.getPassword());
+		user.setEmail(dto.getEmail());
 
-        return this.convertToDto(this.repository.save(user));
-    }
+		return this.convertToDto(this.repository.save(user));
+	}
 
-    @Override
-    public void deleteUser(int id) {
-        User user = this.repository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("User", " Id ", id));
+	@Override
+	public void deleteUser(int id) {
+		User user = this.repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User", " Id ", id));
 
-        this.repository.delete(user);
-    }
+		this.repository.delete(user);
+	}
 
-    public UserDto convertToDto(User user) {
-        return this.modelMapper.map(user, UserDto.class);
+	public UserDto convertToDto(User user) {
+		return this.modelMapper.map(user, UserDto.class);
 
-    }
+	}
 
-    public User convertToUser(UserDto dto) {
-        return this.modelMapper.map(dto, User.class);
-
-    }
-
-    @Override
-	public User loadUserByUsername(String username) throws UsernameNotFoundException {
-		User user = repository.findByUserName(username)
-				.orElseThrow(() -> new UserNotFoundWithEmailException("User not found with username " + username));
+	public User convertToUser(UserDto dto) {
+		User user = modelMapper.map(dto, User.class);
+		user.setPassword(this.passwordEncoder.encode(dto.getPassword()));
+		//return this.modelMapper.map(dto, User.class);
 		return user;
 	}
+
 
 	@Override
 	public User getUserByUsername(String username) {
@@ -91,11 +93,10 @@ public class UserServiceImpl implements UserService, UserDetailsService  {
 
 	@Override
 	public UserDto registerNewUser(UserDto userDto) {
-User user = convertToUser(userDto);
-		
+		User user = convertToUser(userDto);
 		user.getRoles().add(Const.ROLE_ADMIN);
-		
 		User newUser = this.repository.save(user);
-		
+
 		return convertToDto(user);
-	}}
+	}
+}

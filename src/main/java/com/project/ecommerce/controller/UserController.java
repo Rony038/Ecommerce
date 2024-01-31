@@ -26,6 +26,11 @@ import jakarta.validation.Valid;
 public class UserController {
 	@Autowired
 	UserService service;
+	
+	@PostMapping("/register")
+	public ResponseEntity<UserDto> registerNewUser(@RequestBody UserDto userDto) {
+		return new ResponseEntity<UserDto>(this.service.registerNewUser(userDto), HttpStatus.CREATED);
+	}
 	// create
 		@PostMapping("/save")
 		public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto) {

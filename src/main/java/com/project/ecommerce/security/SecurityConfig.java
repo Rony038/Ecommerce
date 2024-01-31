@@ -1,9 +1,12 @@
 package com.project.ecommerce.security;
 
 import com.project.ecommerce.service.UserService;
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
@@ -25,8 +28,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 public class SecurityConfig {
 
-    @Autowired
-    private UserService userInformationService;
+	@Autowired
+	private CustomUserDetailsService customUserDetailsService;
 
     @Autowired
     private JwtAuthEntryPoint jwtAuthEntryPoint;
@@ -52,8 +55,8 @@ public class SecurityConfig {
         http.cors(Customizer.withDefaults()).csrf(AbstractHttpConfigurer::disable)
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests((requests) -> requests.requestMatchers(
-                "/login", "/logOut", "/checkTokenExpiry", "/checkTokenValidity").permitAll()
-                .anyRequest().authenticated())
+                "/api/auth/login","/api/user/register", "/checkTokenExpiry", "/checkTokenValidity",
+                "/api/user/save").permitAll().requestMatchers(HttpMethod.GET).permitAll().anyRequest().authenticated())
                 .exceptionHandling((exceptionHandling) -> exceptionHandling.authenticationEntryPoint(jwtAuthEntryPoint));
 
         http.addFilterBefore(jwtAuthFilter(), UsernamePasswordAuthenticationFilter.class);
@@ -64,7 +67,7 @@ public class SecurityConfig {
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService((UserDetailsService) this.userInformationService);
+        authProvider.setUserDetailsService((UserDetailsService) this.customUserDetailsService);
         authProvider.setPasswordEncoder(this.passwordEncoder());
         return authProvider;
     }
