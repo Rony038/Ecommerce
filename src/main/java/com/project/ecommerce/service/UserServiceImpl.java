@@ -86,7 +86,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User getUserByUsername(String username) {
-		User user = repository.findByUserName(username)
+		User user = repository.findByEmail(username)
 				.orElseThrow(() -> new UserNotFoundWithEmailException("User not found with username " + username));
 		return user;
 	}

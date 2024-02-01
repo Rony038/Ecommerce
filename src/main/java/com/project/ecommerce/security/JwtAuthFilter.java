@@ -51,6 +51,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             }
             // security
 //            User userDetails = this.userDetailsService.loadUserByUsername(userName);
+            System.out.println(userName);
               
                 UserDetails userDetails = this.customUserDetailsService.loadUserByUsername(userName);
            

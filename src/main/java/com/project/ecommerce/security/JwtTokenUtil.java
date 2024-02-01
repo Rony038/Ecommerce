@@ -17,7 +17,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 @Component
 public class JwtTokenUtil {
-    private final String key = "MMvUxHrMHVyaQNcwq3tH0k1qMdNT7iR291+QeczxSaxhyAz8hMkBUzd/eZDq3oXt"; 
+    private final String key = "MMvUxHrMHVyaQNcwq3tH0k1qMdNT7iR291+QeczxSaxhyAz8hMkBUzd/eZDq3oXt";
+	//private final String key = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJyb255QGdtYWlsLmNvbSIsImlhdCI6MTcwNjcyNzUzOSwiZXhwIjoxNzA3NTkxNTM5fQ._-abVkN5YIOdpoy6CBFnm6zpaag2GXcTwE6eZ8LuBmY";
     public static long JWT_TOKEN_VALIDITY = 1000*60*60*240;
     
     SecretKey SECRET_KEY = Keys.hmacShaKeyFor(Decoders.BASE64.decode(key));

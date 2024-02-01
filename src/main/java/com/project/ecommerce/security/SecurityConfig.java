@@ -20,13 +20,16 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
 
 
 
 @Configuration
 @EnableWebSecurity
-
-public class SecurityConfig {
+@EnableWebMvc
+public class SecurityConfig implements WebMvcConfigurer{
 
 	@Autowired
 	private CustomUserDetailsService customUserDetailsService;
@@ -87,5 +90,17 @@ public class SecurityConfig {
     public JwtAuthFilter jwtAuthFilter() {
     	return new JwtAuthFilter();
     }
-
+    
+//    @Bean
+//    public CommonsMultipartResolver multipartResolver() {
+//        CommonsMultipartResolver resolver = new CommonsMultipartResolver();
+//        resolver.setDefaultEncoding("utf-8");
+//        // Set maximum size of individual files (in bytes)
+//        resolver.setMaxUploadSizePerFile(10485760); // 10MB
+//        // Set maximum size of entire request (in bytes)
+//        resolver.setMaxUploadSize(20971520); // 20MB
+//        // Set whether to enable automatic file deletion on resolution failure
+//        resolver.setDeleteFilesOnCleanup(true);
+//        return resolver;
+//    }
 }
